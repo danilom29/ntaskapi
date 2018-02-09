@@ -1,7 +1,7 @@
 module.exports = app => {
-  // app.db.sync().done(() => {
+  app.db.sequelize.sync({force:true}).done(() => {
     app.listen(app.get("port"), () => {
       console.log(`NTASK API - porta `);
     });
-  // });
+  });
 }

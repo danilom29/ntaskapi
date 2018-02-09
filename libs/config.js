@@ -7,6 +7,7 @@ module.exports = {
 		storage: "ntask.sqlite",
 		define: {
 			underscored: true
-		}
+		},
+		operatorsAliases: false
 	}
 };
