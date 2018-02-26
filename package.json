@@ -9,8 +9,12 @@
   "author": "Danilo Barbosa",
   "dependencies": {
     "babel": "^6.23.0",
+    "bcrypt": "^1.0.3",
     "consign": "^0.1.6",
     "express": "^4.16.2",
+    "jwt-simple": "^0.5.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^2.0.0",
     "sequelize": "^4.33.1",
     "sqlite3": "^3.1.13"
   },

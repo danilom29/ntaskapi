@@ -9,5 +9,7 @@ module.exports = {
 			underscored: true
 		},
 		operatorsAliases: false
-	}
+	},
+	jwtSecret: "Nta$K-AP1",
+	jwtSession: {session: false}
 };
