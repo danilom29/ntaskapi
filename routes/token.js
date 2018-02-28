@@ -22,7 +22,7 @@ module.exports = app => {
 			})
 			.catch(error => res.sendStatus(401));
 		}else{
-			ress.endStatus(401);
+			res.sendStatus(401);
 		}
 	});
 };
