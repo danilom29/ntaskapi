@@ -9,23 +9,22 @@ module.exports = app => {
 		jwtFromRequest: ExtractJwt.fromAuthHeader(),
 		secretOrKey: cfg.jwtSecret
 	}
-	const strategy = new Strategy(opt,
-		(payload, done) => {
-			Users.findById(payload.id)
-				.then(user => {
-					if(user){
-						return done(null, {
-							id: user.id,
-							email: user.email
-						});
-					}
-					return done(null,false);
-				})
-				.catch(error => done(error, null));
-		});
+	const strategy = new Strategy(opt, (payload, done) => {
+		Users.findById(payload.id)
+			.then(user => {
+				if(user){
+					return done(null, {
+						id: user.id,
+						email: user.email
+					});
+				}
+				return done(null,false);
+			})
+			.catch(error => done(error, null));
+	});
 	passport.use(strategy);
 	return {
-		initialize: () =>  passport.initialize(),
-		authenticate: () => passport.authenticate("jwt", cfg.jwtSession)
+		initialize: () =>  {return passport.initialize()},
+		authenticate: () => {return passport.authenticate("jwt", cfg.jwtSession)}
 	};
 };
