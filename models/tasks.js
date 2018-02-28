@@ -17,12 +17,10 @@ module.exports = (sequelize,DataType) => {
 			allowNull: false,
 			defaultValue: false
 		}
-	}, {
-		classMethods: {
-			associate: (models) => {
-				Tasks.belonsTo(models.Users);
-			}
-		}
 	});
+
+	Tasks.associate = (models) => {
+		Tasks.belongsTo(models.Users);
+	}
 	return Tasks;
 };
