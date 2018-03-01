@@ -4,7 +4,8 @@
   "description": "API de gestão de tarefas",
   "main": "index.js",
   "scripts": {
-    "start": "npm run apidoc && babel-node index.js",
+    "start": "npm run apidoc && npm run clusters",
+    "clusters": "babel-node clusters.js",
     "test": "SET NODE_ENV=test&&mocha test/**/*.js",
     "apidoc": "apidoc -i routes/ -o public/apidoc"
   },
@@ -15,13 +16,18 @@
   "dependencies": {
     "babel": "^6.23.0",
     "bcrypt": "^1.0.3",
+    "compression": "^1.7.2",
     "consign": "^0.1.6",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
+    "helmet": "^3.11.0",
     "jwt-simple": "^0.5.1",
+    "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-jwt": "^2.0.0",
     "sequelize": "^4.33.1",
-    "sqlite3": "^3.1.13"
+    "sqlite3": "^3.1.13",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
