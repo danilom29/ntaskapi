@@ -66,7 +66,8 @@ module.exports = app => {
 	* @apiErrorExample {json} Erro de consulta
 	*    HTTP/1.1 412 Precondition Failed
 	*/
-	.post((req,res) => {
+	.post((req,res) => { 
+		req.body.user_id = req.user.id;
 		Tasks.create(req.body)
 		.then(result => res.json(result))
 		.catch(error => {
