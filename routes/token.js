@@ -20,13 +20,14 @@ module.exports = app => {
 	* @apiErrorExample {json} Erro de autenticação
 	*	HTTP/1.1 401 Unauthorized
 	*/
-	app.post("/token", (req, res) => {
+	app.post("/token", (req, res) => { 
 		if(req.body.email && req.body.password){
 			const email = req.body.email;
 			const password = req.body.password;
 
 			Users.findOne({
-				where: {email: email}
+				where: {email: email}, 
+					logging: true
 			}).then(user => { 
 				if(Users.isPassword(user.password, password)){
 					const payload = {id: user.id}; 

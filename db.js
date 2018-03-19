@@ -1,10 +1,10 @@
-const Sequelize = require("Sequelize");
+const Sequelize = require("sequelize")
 const path = require("path");
 const fs = require("fs");
 
 let db = null;
 
-module.exports = app => {
+module.exports = app => { 
 	if(!db){
 		const config = app.libs.config;
 		const sequelize = new Sequelize(
