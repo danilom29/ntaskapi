@@ -1,6 +1,6 @@
 module.exports = app => {
-	const Result = app.db.models.Result;
-    console.log("aqui")
+	const Result = app.db.models.Result; 
+	var sequelize = app.db.sequelize;
 	app.route("/result")
 	.all(app.auth.authenticate())	
 	.get((req,res) => {
@@ -13,13 +13,29 @@ module.exports = app => {
 		});
 	})
 	.post((req,res) => { 
-        req.body.user_id = req.user.id;
-        console.log(req.body)
-		Result.create(req.body)
-		.then(result => res.json(result))
-		.catch(error => {
-			res.status(412).json({msg: error.message});
-		});
+		req.body.user_id = req.user.id; 
+		let sql = `select * from Results where date(data_inclusao) = '${req.body.data_inclusao}';`;
+		console.log(sql);
+		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
+		.then(data => {
+			console.log(data.length);
+			if(data.length > 0){
+				Result.update(req.body, {where: {
+					id: data[0].id
+				}})
+				.then(result => res.sendStatus(204))
+				.catch(error => {
+					res.status(412).json({msg: error.message});
+				});
+			}else{
+				Result.create(req.body)
+				.then(result => res.json(result))
+				.catch(error => {
+					res.status(412).json({msg: error.message});
+				});
+			}
+		})
+
 	});
 
 	app.route("/result/:id")

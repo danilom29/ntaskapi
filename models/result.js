@@ -37,7 +37,16 @@ module.exports = (sequelize,DataType) => {
 			type: DataType.BOOLEAN,
 			allowNull: false,
 			defaultValue: false
+		},
+		data_inclusao: {
+			type: DataType.DATE,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
 		}
+	}, {
+		timestamps: false
 	});
 
 	Result.associate = (models) => {
