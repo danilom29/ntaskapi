@@ -4,7 +4,8 @@ module.exports = app => {
 	var sequelize = app.db.sequelize;
 	app.route("/kc")
 	.all(app.auth.authenticate())	
-	.post((req,res) => { 		
+	.post((req,res) => { 
+		req.body.descricao = req.body.culture_id;		
         culture.create(req.body)
         .then(data => { 
 			req.body.culture_id = data.id; 
@@ -24,10 +25,10 @@ module.exports = app => {
 	app.route("/kc/value")
 	.all(app.auth.authenticate()) 
 	.post((req,res) => {
-		let sql = `select kc.* from KC_Values kc 
+		let sql = `select kc.kc from KC_Values kc 
 		inner join cultures c on kc.culture_id = c.id
 		INNER JOIN Stages s on kc.stage_id = s.id
-		where kc.culture_id = ${req.body.culture_id} and kc.stage_id = ${req.body.stage_id} and umidade_maior_setenta = ${req.body.umidade_maior_setenta}`;
+		where kc.culture_id = ${req.body.culture_id.id} and kc.stage_id = ${req.body.stage_id} and umidade_maior_setenta = ${req.body.umidade_maior_setenta}`;
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(data => res.json(data))
 		.catch(error => {
