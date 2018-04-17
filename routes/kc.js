@@ -9,7 +9,6 @@ module.exports = app => {
         culture.create(req.body)
         .then(data => { 
 			req.body.culture_id = data.id; 
-			req.body.stage_id = req.body.stage; 
 			KC_Value.create(req.body)
 			.then(response => res.json(response))
 			.catch(error => {
@@ -34,5 +33,17 @@ module.exports = app => {
 		.catch(error => {
 			res.status(412).json({msg: error.message});
 		});
+	});
+
+	app.route("/kc/temp")
+	.all(app.auth.authenticate())	
+	.post((req,res) => { 
+		req.body.culture_id = req.body.culture_id.id;
+		KC_Value.create(req.body)
+		.then(response => res.json(response))
+		.catch(error => {
+			res.status(412).json({msg: error.message});
+		});
+
 	});
 }

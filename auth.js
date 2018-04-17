@@ -10,7 +10,6 @@ module.exports = app => {
 		secretOrKey: cfg.jwtSecret
 	}
 	const strategy = new Strategy(opt, (payload, done) => {
-		console.log(payload);
 		Users.findById(payload.id)
 			.then(user => {
 				if(user){

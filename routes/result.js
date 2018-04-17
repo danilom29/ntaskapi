@@ -14,11 +14,9 @@ module.exports = app => {
 	})
 	.post((req,res) => { 
 		req.body.user_id = req.user.id; 
-		let sql = `select * from Results where date(data_inclusao) = '${req.body.data_inclusao}';`;
-		console.log(sql);
+		let sql = `select * from Results where date(data_inclusao) = '${req.body.data_inclusao}'  and user_id = ${req.user.id} and culture_id = ${req.body.culture_id};`;
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(data => {
-			console.log(data.length);
 			if(data.length > 0){
 				Result.update(req.body, {where: {
 					id: data[0].id
