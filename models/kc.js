@@ -26,6 +26,7 @@ module.exports = (sequelize,DataType) => {
 	KC_Value.associate = (models) => {
 		KC_Value.belongsTo(models.culture);
 		KC_Value.belongsTo(models.Stages);
+		KC_Value.belongsTo(models.Users);
 	}
 	return KC_Value;
 };

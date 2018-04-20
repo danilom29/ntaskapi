@@ -15,6 +15,10 @@ module.exports = (sequelize,DataType) => {
 	}, {
 		timestamps: false
     }); 
+
+    culture.associate = (models) => {
+		culture.belongsTo(models.Users);
+	}
     
 	return culture;
 };

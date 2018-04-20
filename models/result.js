@@ -5,6 +5,13 @@ module.exports = (sequelize,DataType) => {
 			primaryKey: true,
 			autoIncrement: true
 		},
+		culture_id: {
+			type: DataType.INTEGER,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+		},
 		radiacao: {
 			type: DataType.DOUBLE,
 			allowNull: false,
