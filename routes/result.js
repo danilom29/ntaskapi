@@ -47,7 +47,6 @@ module.exports = app => {
 		});
 	})
 	.get((req,res) => { 
-		console.log(req.query.id,req.user.id);
 		Result.findAll({where: {
 			culture_id: req.query.id,
 			user_id: req.user.id
@@ -61,12 +60,10 @@ module.exports = app => {
 	app.route("/result/culturas")
 	.all(app.auth.authenticate()) 
 	.get((req,res) => {
-		let sql = `SELECT c.* FROM cultures c INNER JOIN Results r ON c.id = r.culture_id WHERE r.user_id = ${req.user.id}`;
-		console.log("aqui",sql)
+		let sql = `SELECT distinct c.id, c.descricao FROM cultures c INNER JOIN Results r ON c.id = r.culture_id WHERE r.user_id = ${req.user.id}`;
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(data => res.json(data))
 		.catch(error => {
-			console.log(error)
 			res.status(412).json({msg: error.message});
 		});
 	});
