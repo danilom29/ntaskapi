@@ -7,7 +7,7 @@ const compression = require("compression");
 const helmet = require("helmet");
 
 module.exports = app => {
-	app.set("port",3000);
+	app.set("port",7000);
 	app.set("json spaces", 4);
 	app.use(morgan("common", {
 		stream: {
