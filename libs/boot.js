@@ -9,7 +9,7 @@ module.exports = app => {
 		}
 		
 		//acesso HTTP
-		app.db.sequelize.sync({force:false}).done(() => {
+		app.db.sequelize.sync({force:true}).done(() => {
 			app.listen(app.get("port"), () => {
 			  console.log(`NTASK API - porta ${app.get("port")}`);
 			});

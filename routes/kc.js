@@ -5,7 +5,6 @@ module.exports = app => {
 	app.route("/kc")
 	.all(app.auth.authenticate())	
 	.post((req,res) => { 
-<<<<<<< HEAD
 		if(typeof req.body.culture_id == "string"){
 			req.body.descricao = req.body.culture_id;	
 			req.body.user_id = req.user.id;
@@ -25,12 +24,6 @@ module.exports = app => {
 		}else{
 			req.body.culture_id = req.body.culture_id.id; 
 			req.body.user_id = req.user.id;
-=======
-		req.body.descricao = req.body.culture_id;		
-        culture.create(req.body)
-        .then(data => { 
-			req.body.culture_id = data.id; 
->>>>>>> fae6b275ce4622d4a6f62c0b0c026bfd93b283e0
 			KC_Value.create(req.body)
 			.then(response => res.json(response))
 			.catch(error => {
