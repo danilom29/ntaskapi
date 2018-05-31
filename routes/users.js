@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 module.exports = app => {
 	const Users = app.db.models.Users;
 	app.route("/user")
@@ -50,6 +51,8 @@ module.exports = app => {
 	})
 
 	.put((req,res) => {
+		const salt = bcrypt.genSaltSync(); 
+		req.body.password = bcrypt.hashSync(req.body.password, salt);
 		Users.update(req.body, {where: {
 			id: req.user.id
 		}})
