@@ -34,7 +34,7 @@ module.exports = app => {
 
 	});
 
-	app.route("/resultados")
+	app.route("/resultados/:id")
 	.all(app.auth.authenticate()) 
 	.put((req,res) => {
 		Result.update(req.body, {where: {
@@ -48,8 +48,8 @@ module.exports = app => {
 	})
 	.get((req,res) => {
 		let sql = `select * from Results where user_id = ${req.user.id}  order by data_inclusao desc`;
-		if(req.query.id != 0){
-			let sql = `select * from Results where user_id = ${req.user.id} and culture_id = ${req.query.id}  order by data_inclusao desc`;
+		if(req.params.id != 0){
+			let sql = `select * from Results where user_id = ${req.user.id} and culture_id = ${req.params.id}  order by data_inclusao desc`;
 		}
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(result => res.json(result))
