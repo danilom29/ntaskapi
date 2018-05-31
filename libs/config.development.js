@@ -7,9 +7,7 @@ module.exports = {
 	params: {
 		dialect: "sqlite",
 		storage: "ntask-eto.sqlite",
-		logging: (sql) => {
-			logger.info(`[${new Date()}] ${sql}`);
-		},
+		logging: false,
 		define: {
 			underscored: true
 		},
