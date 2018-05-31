@@ -46,11 +46,8 @@ module.exports = app => {
 			res.status(412).json({msg: error.message});
 		});
 	})
-	.get((req,res) => {
-		let sql = `select * from Results where user_id = ${req.user.id}  order by data_inclusao desc`;
-		if(req.params.id != 0){
-			let sql = `select * from Results where user_id = ${req.user.id} and culture_id = ${req.params.id}  order by data_inclusao desc`;
-		}
+	.get((req,res) => { 
+		req.params.id == 0 ? sql = `select * from Results where user_id = ${req.user.id}  order by data_inclusao desc` : sql = `select * from Results where user_id = ${req.user.id} and culture_id = ${req.params.id}  order by data_inclusao desc`;;
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(result => res.json(result))
 		.catch(error => {
