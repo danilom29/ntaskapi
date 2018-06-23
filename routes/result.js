@@ -1,4 +1,16 @@
+const reportHtml = require('../libs/gerarHtmlReport')();
+const axios = require('axios');
+const querystring = require('querystring');
+const nodemailer = require('nodemailer');
 module.exports = app => {
+	const transporter = nodemailer.createTransport({
+		service:"gmail",
+		auth: {
+			user: "mdanilo.13@gmail.com",
+			pass: "pompom23"
+		},
+		tls: { rejectUnauthorized: false }
+	});
 	const Result = app.db.models.Result; 
 	var sequelize = app.db.sequelize;
 	app.route("/result")
@@ -47,7 +59,7 @@ module.exports = app => {
 		});
 	})
 	.get((req,res) => { 
-		req.params.id == 0 ? sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao from Results where user_id = ${req.user.id}  order by data_inclusao desc` : sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao from Results where user_id = ${req.user.id} and culture_id = ${req.params.id}  order by data_inclusao desc`;;
+		req.params.id == 0 ? sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao from Results where user_id = ${req.user.id}  order by data_inclusao desc` : sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao from Results where user_id = ${req.user.id} and culture_id = ${req.params.id}  order by data_inclusao desc`;
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(result => res.json(result))
 		.catch(error => {
@@ -64,5 +76,61 @@ module.exports = app => {
 		.catch(error => {
 			res.status(412).json({msg: error.message});
 		});
+	});
+
+	app.route("/result/report")
+	.all(app.auth.authenticate())	
+	.post((req,res) => {
+		let email = req.body.email;
+		const typeReturn = (phantomConfig, html) => {
+			let rotaInterna = phantomConfig.rotaInterna;
+            if (rotaInterna) {
+                // Gerar pdf internamente
+                axios.post(rotaInterna, querystring.stringify({
+                    name: phantomConfig.name,
+                    excluir: phantomConfig.excluir || false,
+                    tipoPDF: phantomConfig.tipoPDF,
+                    html: html
+                }))
+                .then(response => {
+                    out(response.data);
+                })
+                .catch( () => res.status(412));
+            } else {
+                // Retorna html 
+                res.send(html);
+            }
+
+            function out(data) { console.log(data.ret)
+            	if(data.ret){
+					let mailOptions = {
+						from: 'mdanilo.13@gmail.com',
+						to: email,
+						subject: 'Relatório de Resultados',
+						text: 'Bem fácil, não? ;)',
+						attachments: [{ // Basta incluir esta chave e listar os anexos
+							filename: 'relatorio.pdf', // O nome que aparecerá nos anexos
+							path: './midias/'+phantomConfig.name+'.pdf' // O arquivo será lido neste local ao ser enviado
+						}]
+					};
+					transporter.sendMail(mailOptions, function(error, info){
+						if (error) {
+						  let retorno = {ret:false};
+						  res.status(200).json(retorno);
+						} else {
+						  res.status(200).json(data);
+						}
+					});            		
+            	}else{
+	                res.status(200).json(data);
+            	}
+            }
+
+            res.status(412);
+        }
+		let html = reportHtml.preview({
+            problemas: req.body.data
+		});
+		typeReturn(req.body.phantom, html);
 	});
 }

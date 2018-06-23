@@ -4,7 +4,7 @@ module.exports = app => {
 	var sequelize = app.db.sequelize;
 	app.route("/kc")
 	.all(app.auth.authenticate())	
-	.post((req,res) => { 
+	.post((req,res) => { console.log
 		if(typeof req.body.culture_id == "string"){
 			req.body.descricao = req.body.culture_id;	
 			req.body.user_id = req.user.id;
