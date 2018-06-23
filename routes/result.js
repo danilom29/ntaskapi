@@ -101,8 +101,9 @@ module.exports = app => {
                 res.send(html);
             }
 
-            function out(data) { 
+            function out(data) { console.log("entrou")
             	if(data.ret){
+            		console.log("if")
 					let mailOptions = {
 						from: 'mdanilo.13@gmail.com',
 						to: email,
@@ -113,15 +114,18 @@ module.exports = app => {
 							path: './midias/'+phantomConfig.name+'.pdf' // O arquivo será lido neste local ao ser enviado
 						}]
 					};
+					console.log(mailOptions)
 					transporter.sendMail(mailOptions, function(error, info){
 						if (error) { console.log(error)
 						  let retorno = {ret:false};
 						  res.status(200).json(retorno);
 						} else {
+							console.log("email enviado")
 						  res.status(200).json(data);
 						}
 					});            		
             	}else{
+            		console.log("else")
 	                res.status(200).json(data);
             	}
             }
