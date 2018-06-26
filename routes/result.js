@@ -59,7 +59,7 @@ module.exports = app => {
 		});
 	})
 	.get((req,res) => { 
-		req.params.id == 0 ? sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao from Results where user_id = ${req.user.id}  order by data_inclusao desc` : sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao from Results where user_id = ${req.user.id} and culture_id = ${req.params.id}  order by data_inclusao desc`;
+		req.params.id == 0 ? sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao, tmax, tmed, tmin, kc, area, eficiencia from Results where user_id = ${req.user.id}  order by data_inclusao desc` : sql = `select cast(radiacao as text) as radiacao,cast(eto as text) as eto,cast(etc as text) as etc,cast(litro_vaso * 1000 as text) as resultado, cast((litro_vaso * 1000) * 1.3 as text) as trinta, strftime('%d-%m-%Y', data_inclusao) as data_inclusao from Results where user_id = ${req.user.id} and culture_id = ${req.params.id}  order by data_inclusao desc`;
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(result => res.json(result))
 		.catch(error => {
