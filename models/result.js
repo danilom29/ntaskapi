@@ -51,7 +51,49 @@ module.exports = (sequelize,DataType) => {
 			validate: {
 				notEmpty: true
 			}
-		}
+		},
+		tmax: {
+			type: DataType.DOUBLE,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+        },
+		tmed: {
+			type: DataType.DOUBLE,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+        },
+		tmin: {
+			type: DataType.DOUBLE,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+        },
+		kc: {
+			type: DataType.DOUBLE,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+        },
+		area: {
+			type: DataType.DOUBLE,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+        },
+		eficiencia: {
+			type: DataType.DOUBLE,
+			allowNull: false,
+			validate: {
+				notEmpty: true
+			}
+        }
 	}, {
 		timestamps: false
 	});
