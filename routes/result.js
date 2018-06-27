@@ -9,7 +9,7 @@ module.exports = app => {
 		auth: {
 			user: "mdanilo.13@gmail.com",
 			pass: "pompom23"
-		},
+		}
 	});
 	const Result = app.db.models.Result; 
 	var sequelize = app.db.sequelize;
@@ -86,24 +86,23 @@ module.exports = app => {
 			let rotaInterna = phantomConfig.rotaInterna;
             if (rotaInterna) {
                 // Gerar pdf internamente
-                // axios.post(rotaInterna, querystring.stringify({
-                //     name: phantomConfig.name,
-                //     excluir: phantomConfig.excluir || false,
-                //     tipoPDF: phantomConfig.tipoPDF,
-                //     html: html
-                // }))
-                // .then(response => {
-                // })
-                // .catch( () => res.status(412));
-                    out({ret:true});
+                axios.post(rotaInterna, querystring.stringify({
+                    name: phantomConfig.name,
+                    excluir: phantomConfig.excluir || false,
+                    tipoPDF: phantomConfig.tipoPDF,
+                    html: html
+                }))
+                .then(response => {
+					out({ret:true});
+                })
+                .catch( () => res.status(412));
             } else {
                 // Retorna html 
                 res.send(html);
             }
 
-            function out(data) { console.log("entrou")
-            	if(data.ret){
-            		console.log("if")
+            function out(data) { 
+            	if(data.ret){ 
 					let mailOptions = {
 						from: 'mdanilo.13@gmail.com',
 						to: email,
@@ -113,19 +112,18 @@ module.exports = app => {
 							filename: 'relatorio.pdf', // O nome que aparecerá nos anexos
 							path: './midias/'+phantomConfig.name+'.pdf' // O arquivo será lido neste local ao ser enviado
 						}]
-					};
-					console.log(mailOptions)
+					}; 
 					transporter.sendMail(mailOptions, function(error, info){
-						if (error) { console.log(error)
-						  let retorno = {ret:false};
-						  res.status(200).json(retorno);
+						if (error) { 
+							console.log(error)
+							let retorno = {ret:false};
+							res.status(200).json(retorno);
 						} else {
 							console.log("email enviado")
-						  res.status(200).json(data);
+							res.status(200).json(data);
 						}
 					});            		
-            	}else{
-            		console.log("else")
+            	}else{ 
 	                res.status(200).json(data);
             	}
             }
