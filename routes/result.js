@@ -84,22 +84,22 @@ module.exports = app => {
 		let email = req.body.email;
 		const typeReturn = (phantomConfig, html) => {
 			let rotaInterna = phantomConfig.rotaInterna;
-            if (rotaInterna) {
-                // Gerar pdf internamente
-                axios.post(rotaInterna, querystring.stringify({
-                    name: phantomConfig.name,
-                    excluir: phantomConfig.excluir || false,
-                    tipoPDF: phantomConfig.tipoPDF,
-                    html: html
-                }))
-                .then(response => {
-					out({ret:true});
-                })
-                .catch( () => res.status(412));
-            } else {
-                // Retorna html 
-                res.send(html);
-            }
+            // if (rotaInterna) {
+            //     // Gerar pdf internamente
+            //     axios.post(rotaInterna, querystring.stringify({
+            //         name: phantomConfig.name,
+            //         excluir: phantomConfig.excluir || false,
+            //         tipoPDF: phantomConfig.tipoPDF,
+            //         html: html
+            //     }))
+            //     .then(response => {
+			// 	})
+            //     .catch( () => res.status(412));
+            // } else {
+			// 	// Retorna html 
+            //     res.send(html);
+            // }
+			out({ret:true});
 
             function out(data) { 
             	if(data.ret){ 
