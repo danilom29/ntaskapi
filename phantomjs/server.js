@@ -46,8 +46,9 @@ service = server.listen(confServer.port, { keepAlive: false }, function (request
     
     response.statusCode = confServer.responseStatusCode;
     response.headers = confServer.responseHeaders;
-    console.log(confPrint.default.zoomFactor)
-    page.zoomFactor = confPrint.default.zoomFactor;
+    
+    page.zoomFactor = 0.25;
+    page.dpi = 300;
     page.paperSize = confPrint.default.paperSize;
     page.viewportSize = confPrint.default.viewportSize;
     
