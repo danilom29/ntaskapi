@@ -86,16 +86,16 @@ module.exports = app => {
 			let rotaInterna = phantomConfig.rotaInterna;
             if (rotaInterna) {
                 // Gerar pdf internamente
-                // axios.post(rotaInterna, querystring.stringify({
-                //     name: phantomConfig.name,
-                //     excluir: phantomConfig.excluir || false,
-                //     tipoPDF: phantomConfig.tipoPDF,
-                //     html: html
-                // }))
-                // .then(response => {
-                // })
-                // .catch( () => res.status(412));
+                axios.post(rotaInterna, querystring.stringify({
+                    name: phantomConfig.name,
+                    excluir: phantomConfig.excluir || false,
+                    tipoPDF: phantomConfig.tipoPDF,
+                    html: html
+                }))
+                .then(response => {
                     out({ret:true});
+                })
+                .catch( () => res.status(412));
             } else {
                 // Retorna html 
                 res.send(html);
