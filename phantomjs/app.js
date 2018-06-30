@@ -4,7 +4,7 @@ var confPrint = {
 	        width: 620, 
 	        height: 800 
 	    },
-	    zoomFactor: 10,
+	    zoomFactor: 1,
         paperSize: {
             format: 'A4',
             margin: {
