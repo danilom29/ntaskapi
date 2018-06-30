@@ -20,7 +20,7 @@ var confPrint = {
             width: 620, 
             height: 800 
         },
-        zoomFactor: 10,
+        zoomFactor: 0.68,
         paperSize: {
             format: 'A4',
             orientation: 'landscape',
