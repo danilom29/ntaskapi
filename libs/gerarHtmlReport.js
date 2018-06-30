@@ -14,8 +14,7 @@ module.exports = () => {
                 </head>            
                 <body>
                     <div style="display:none;justify-content: center;">
-                        <h1 style="width: 90%;text-align:center;">Relatório</h1>
-                        <img src="imagens/new.png" width="" style="height: 80px;">
+                        <img src="./imagens/new.png" width="" style="height: 80px;">
                     </div>
                     <table>
                         <thead>

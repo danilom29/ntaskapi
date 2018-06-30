@@ -24,3 +24,7 @@ th mat-icon {
 th a mat-icon {
     vertical-align: middle;
 }
+
+body{
+    font-size: 11px !important;
+}

@@ -35,7 +35,7 @@ var confPrint = {
             header: {
                 height: "2cm",
                 contents:  phantom.callback(function(pageNum, numPages) {
-                    return "<div style='display:flex;justify-content: center;'><h1 style='width: 90%;text-align:center;'>Relatório</h1><img src='/imagens/new.png' width=' style='height: 80px;'></div>";
+                    return "<div style='display:flex;justify-content: center;'><h1 style='width: 90%;text-align:center;'>Relatório</h1><img src='http://localhost/imagens/new.png' width=' style='height: 80px;'></div>";
                 })
             }
         }
