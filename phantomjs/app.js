@@ -16,11 +16,7 @@ var confPrint = {
         }
     },
     report: {
-        viewportSize: { 
-            width: 620, 
-            height: 800 
-        },
-        zoomFactor: 0.68,
+        zoomFactor: 0.25,
         paperSize: {
             format: 'A4',
             orientation: 'landscape',
