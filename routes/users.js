@@ -1,6 +1,16 @@
 const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer');
 module.exports = app => {
 	const Users = app.db.models.Users;
+	var sequelize = app.db.sequelize;
+	const transporter = nodemailer.createTransport({
+		service:"gmail",
+		port: 443,
+		auth: {
+			user: "mdanilo.13@gmail.com",
+			pass: "pompom23"
+		}
+	});
 	app.route("/user")
 	.all(app.auth.authenticate())
 	/**
@@ -95,6 +105,33 @@ module.exports = app => {
 	app.post("/users", (req,res) => {
 		Users.create(req.body)
 		.then(result => res.json(result))
+		.catch(error => {
+			res.status(412).json({msg: error.message});
+		});
+	});
+
+	app.post("/users/email", (req,res) => {
+		let sql = `select decrypt_password, email from users where email = '${req.body.email}'`;
+		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
+		.then(data => {
+			let mailOptions = {
+				from: 'mdanilo.13@gmail.com',
+				to: data[0].email,
+				subject: 'Recuperação de senha',
+				html: '<p>Segue abaixo sua senha.</p> <p>Senha: '+data[0].decrypt_password+'</p> <br> <p>Sua mensagem foi enviada através do APP Irrigar</p>'
+			};
+			
+			transporter.sendMail(mailOptions, function(error, info){
+				if (error) { 
+					console.log(error)
+					let retorno = {ret:false};
+					res.status(200).json(retorno);
+				} else {
+					console.log("email enviado")
+					res.status(200).json({ret:true});
+				}
+			}); 
+		})
 		.catch(error => {
 			res.status(412).json({msg: error.message});
 		});

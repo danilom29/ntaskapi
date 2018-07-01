@@ -114,7 +114,7 @@ module.exports = app => {
 						from: 'mdanilo.13@gmail.com',
 						to: email,
 						subject: 'Relatório de Resultados',
-						text: 'Bem fácil, não? ;)',
+						html: '<p>Segue em anexo seu relatório em PDF.</p> <br> <p>Sua mensagem foi enviada através do APP Irrigar</p>',
 						attachments: [{ // Basta incluir esta chave e listar os anexos
 							filename: 'relatorio.pdf', // O nome que aparecerá nos anexos
 							path: './midias/'+phantomConfig.name+'.pdf' // O arquivo será lido neste local ao ser enviado
@@ -150,7 +150,7 @@ module.exports = app => {
 							from: 'mdanilo.13@gmail.com',
 							to: email,
 							subject: 'Relatório de Resultados',
-							text: 'Bem fácil, não? ;)',
+							html: '<p>Segue em anexo seu relatório em XLSX.</p> <br> <p>Sua mensagem foi enviada através do APP Irrigar</p>',
 							attachments: [{ // Basta incluir esta chave e listar os anexos
 								filename: 'relatorio.xlsx', // O nome que aparecerá nos anexos
 								path: './midias/'+phantomConfig.name+'.xlsx' // O arquivo será lido neste local ao ser enviado
