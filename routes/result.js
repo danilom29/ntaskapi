@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 const fs = require('fs')
 const conversionFactory = require('html-to-xlsx')
 const puppeteer = require('puppeteer')
-const chromeEval = require('chrome-page-eval')({ puppeteer })
+const chromeEval = require('chrome-page-eval')({ puppeteer }, {args: ['--no-sandbox', '--disable-setuid-sandbox']})
 const conversion = conversionFactory({
   extract: chromeEval
 })
@@ -141,7 +141,7 @@ module.exports = app => {
 		const returnXlsx = (phantomConfig, html) => {
 			try{
 				(async () => { console.log("aqui")
-					const stream = await conversion(html,{args: ['--no-sandbox', '--disable-setuid-sandbox']});	
+					const stream = await conversion(html);	
 					console.log(stream);			
 					// stream.pipe(fs.createWriteStream('./midias/'+phantomConfig.name+'.xlsx',{autoClose:true}))
 					// .on('error',e =>{ console.log('error',e);res.status(200).json({ret:false});})
