@@ -141,33 +141,34 @@ module.exports = app => {
 		const returnXlsx = (phantomConfig, html) => {
 			try{
 				(async () => { console.log("aqui")
-					const stream = await conversion(html,{args: ['--no-sandbox', '--disable-setuid-sandbox']});					
-					stream.pipe(fs.createWriteStream('./midias/'+phantomConfig.name+'.xlsx',{autoClose:true}))
-					.on('error',e =>{ console.log('error',e);res.status(200).json({ret:false});})
-					.on('close',e =>{
-						// res.status(200).json({ret:true});
-						let mailOptions = {
-							from: 'notreply.appirrigar@gmail.com',
-							to: email,
-							subject: 'Relatório de Resultados',
-							html: '<p>Segue em anexo seu relatório em XLSX.</p> <br> <p>Sua mensagem foi enviada através do APP Irrigar</p>',
-							attachments: [{ // Basta incluir esta chave e listar os anexos
-								filename: 'relatorio.xlsx', // O nome que aparecerá nos anexos
-								path: './midias/'+phantomConfig.name+'.xlsx' // O arquivo será lido neste local ao ser enviado
-							}]
-						}; 
-						console.log(mailOptions)
-						transporter.sendMail(mailOptions, function(error, info){
-							if (error) { 
-								console.log(error)
-								let retorno = {ret:false};
-								res.status(200).json(retorno);
-							} else {
-								console.log("email enviado")
-								res.status(200).json({ret:true});
-							}
-						});          
-					});
+					const stream = await conversion(html,{args: ['--no-sandbox', '--disable-setuid-sandbox']});	
+					console.log(stream);			
+					// stream.pipe(fs.createWriteStream('./midias/'+phantomConfig.name+'.xlsx',{autoClose:true}))
+					// .on('error',e =>{ console.log('error',e);res.status(200).json({ret:false});})
+					// .on('close',e =>{
+					// 	// res.status(200).json({ret:true});
+					// 	let mailOptions = {
+					// 		from: 'notreply.appirrigar@gmail.com',
+					// 		to: email,
+					// 		subject: 'Relatório de Resultados',
+					// 		html: '<p>Segue em anexo seu relatório em XLSX.</p> <br> <p>Sua mensagem foi enviada através do APP Irrigar</p>',
+					// 		attachments: [{ // Basta incluir esta chave e listar os anexos
+					// 			filename: 'relatorio.xlsx', // O nome que aparecerá nos anexos
+					// 			path: './midias/'+phantomConfig.name+'.xlsx' // O arquivo será lido neste local ao ser enviado
+					// 		}]
+					// 	}; 
+					// 	console.log(mailOptions)
+					// 	transporter.sendMail(mailOptions, function(error, info){
+					// 		if (error) { 
+					// 			console.log(error)
+					// 			let retorno = {ret:false};
+					// 			res.status(200).json(retorno);
+					// 		} else {
+					// 			console.log("email enviado")
+					// 			res.status(200).json({ret:true});
+					// 		}
+					// 	});          
+					// });
 					
 				})()
 			}catch (e){
