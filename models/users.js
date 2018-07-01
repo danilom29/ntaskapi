@@ -32,6 +32,11 @@ module.exports = (sequelize,DataType) => {
 			type: DataType.BOOLEAN,
 			allowNull: false,
 			defaultValue: false
+		},
+		decrypt_password: {
+		    type: DataType.STRING,
+		    allowNull: false,
+		    defaultValue: false
 		}
 	}, {
 		hooks: {
