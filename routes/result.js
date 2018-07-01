@@ -141,7 +141,7 @@ module.exports = app => {
 		const returnXlsx = (phantomConfig, html) => {
 			try{
 				(async () => { console.log("aqui")
-					const stream = await conversion(html);					
+					const stream = await conversion(html,{args: ['--no-sandbox', '--disable-setuid-sandbox']});					
 					stream.pipe(fs.createWriteStream('./midias/'+phantomConfig.name+'.xlsx',{autoClose:true}))
 					.on('error',e =>{ console.log('error',e);res.status(200).json({ret:false});})
 					.on('close',e =>{
