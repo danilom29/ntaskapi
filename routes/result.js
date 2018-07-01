@@ -2,6 +2,13 @@ const reportHtml = require('../libs/gerarHtmlReport')();
 const axios = require('axios');
 const querystring = require('querystring');
 const nodemailer = require('nodemailer');
+const fs = require('fs')
+const conversionFactory = require('html-to-xlsx')
+const puppeteer = require('puppeteer')
+const chromeEval = require('chrome-page-eval')({ puppeteer })
+const conversion = conversionFactory({
+  extract: chromeEval
+})
 module.exports = app => {
 	const transporter = nodemailer.createTransport({
 		service:"gmail",
@@ -82,7 +89,7 @@ module.exports = app => {
 	.all(app.auth.authenticate())	
 	.post((req,res) => {
 		let email = req.body.email;
-		const typeReturn = (phantomConfig, html) => {
+		const returnPdf = (phantomConfig, html) => {
 			let rotaInterna = phantomConfig.rotaInterna;
             if (rotaInterna) {
                 // Gerar pdf internamente
@@ -99,9 +106,9 @@ module.exports = app => {
             } else {
                 // Retorna html 
                 res.send(html);
-            }
-
-            function out(data) { 
+			}
+			
+            function out(data) {
             	if(data.ret){ 
 					let mailOptions = {
 						from: 'mdanilo.13@gmail.com',
@@ -129,10 +136,52 @@ module.exports = app => {
             }
 
             res.status(412);
-        }
+		}
+		
+		const returnXlsx = (phantomConfig, html) => {
+			try{
+				(async () => {
+					const stream = await conversion(html);					
+					stream.pipe(fs.createWriteStream('./midias/'+phantomConfig.name+'.xlsx',{autoClose:true}))
+					.on('error',e =>{ console.log('error',e);res.status(200).json({ret:false});})
+					.on('close',e =>{
+						// res.status(200).json({ret:true});
+						let mailOptions = {
+							from: 'mdanilo.13@gmail.com',
+							to: email,
+							subject: 'Relatório de Resultados',
+							text: 'Bem fácil, não? ;)',
+							attachments: [{ // Basta incluir esta chave e listar os anexos
+								filename: 'relatorio.xlsx', // O nome que aparecerá nos anexos
+								path: './midias/'+phantomConfig.name+'.xlsx' // O arquivo será lido neste local ao ser enviado
+							}]
+						}; 
+						transporter.sendMail(mailOptions, function(error, info){
+							if (error) { 
+								console.log(error)
+								let retorno = {ret:false};
+								res.status(200).json(retorno);
+							} else {
+								console.log("email enviado")
+								res.status(200).json({ret:true});
+							}
+						});          
+					});
+					
+				})()
+			}catch (e){
+				res.status(500).json({ret:false});
+			}
+		}
+
 		let html = reportHtml.preview({
-            problemas: req.body.data
+			problemas: req.body.data,
+			type: req.body.type
 		});
-		typeReturn(req.body.phantom, html);
+		if(req.body.type == "pdf"){
+			returnPdf(req.body.phantom, html);
+		}else{
+			returnXlsx(req.body.phantom, html);
+		}
 	});
 }

@@ -20,6 +20,13 @@ module.exports = (sequelize,DataType) => {
 		    	notEmpty: true
 		    }
 		},
+		repeatPassword: {
+		    type: DataType.STRING,
+		    allowNull: true,
+		    validate: {
+		    	notEmpty: false
+		    }
+		},
 		email: {
 			type: DataType.STRING,
 			unique: true,
