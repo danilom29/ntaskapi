@@ -7,8 +7,8 @@ module.exports = app => {
 		service:"gmail",
 		port: 443,
 		auth: {
-			user: "mdanilo.13@gmail.com",
-			pass: "pompom23"
+			user: "notreply.appirrigar@gmail.com",
+			pass: "appirrigar2018"
 		}
 	});
 	app.route("/user")
@@ -115,12 +115,12 @@ module.exports = app => {
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(data => {
 			let mailOptions = {
-				from: 'mdanilo.13@gmail.com',
+				from: 'notreply.appirrigar@gmail.com',
 				to: data[0].email,
 				subject: 'Recuperação de senha',
 				html: '<p>Segue abaixo sua senha.</p> <p>Senha: '+data[0].decrypt_password+'</p> <br> <p>Sua mensagem foi enviada através do APP Irrigar</p>'
 			};
-			
+
 			transporter.sendMail(mailOptions, function(error, info){
 				if (error) { 
 					console.log(error)
