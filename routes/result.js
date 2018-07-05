@@ -8,7 +8,9 @@ const puppeteer = require('puppeteer')
 const chromeEval = require('chrome-page-eval')({ puppeteer }, {args: ['--no-sandbox', '--disable-setuid-sandbox']})
 const conversion = conversionFactory({
   extract: chromeEval
-})
+});
+var jsreport = require('jsreport-core')()
+jsreport.use(require('jsreport-html-to-xlsx')())
 module.exports = app => {
 	const transporter = nodemailer.createTransport({
 		service:"gmail",
@@ -142,7 +144,27 @@ module.exports = app => {
 			try{
 				(async () => { console.log("aqui")
 					const stream = await conversion(html);	
-					console.log(stream);			
+					// console.log(stream);
+					jsreport.init().then(() => {
+						return jsreport.render({
+							template: {
+								content: html,
+								engine: 'none',
+								recipe: 'html-to-xlsx'
+							}
+						}).then(function (out) {
+							console.log(res)
+							res.set({
+								'Content-Type': "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+								// instead of report.xlsx you can use any name you want, for example test.xlsx, etc
+								'Content-Disposition': 'attachment; filename="report.xlsx',
+							})
+						  
+							out.stream.pipe(res);
+						}).catch(function (e) {
+							res.end(e.message);
+						})
+					});
 					// stream.pipe(fs.createWriteStream('./midias/'+phantomConfig.name+'.xlsx',{autoClose:true}))
 					// .on('error',e =>{ console.log('error',e);res.status(200).json({ret:false});})
 					// .on('close',e =>{
