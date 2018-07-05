@@ -152,23 +152,22 @@ module.exports = app => {
 					jsreportStarted = true
 					init = jsreport.init()
 				}
-				(async () => {
-					init.then(() => {
-						jsreport.render({
-							template: {
-								content: '<table><tr><td>foo</td></tr></table>',
-								engine: 'none',
-								recipe: 'html-to-xlsx'
-							}
-						}).then(function (res) {
-							console.log("entrou");
-							sair({ret:true});
-							// var dataView = new DataView(res);
-							// var blob = new Blob([dataView], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-							// saveAs(blob, 'a.xlsx')
-						})
-					});
-				})()
+				init.then(() => {
+					jsreport.render({
+						template: {
+							content: '<table><tr><td>foo</td></tr></table>',
+							engine: 'none',
+							recipe: 'html-to-xlsx'
+						}
+					}).then(function (res) {
+						console.log("entrou");
+						sair({ret:true});
+						// var dataView = new DataView(res);
+						// var blob = new Blob([dataView], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+						// saveAs(blob, 'a.xlsx')
+					})
+				});
+				
 				// (async () => { console.log("aqui")
 				// 	const stream = await conversion(html);	
 				// 	console.log(stream);
