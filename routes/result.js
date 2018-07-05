@@ -152,26 +152,22 @@ module.exports = app => {
 					jsreportStarted = true
 					init = jsreport.init()
 				}
-				init.then(() => {
-					jsreport.render({
-						template: {
-							content: html,
-							engine: 'none',
-							recipe: 'html-to-xlsx'
-						}
-					}).then(function (out) {
-						console.log("entrou")
-						// res.set({
-						// 	'Content-Type': "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-						// 	// instead of report.xlsx you can use any name you want, for example test.xlsx, etc
-						// 	'Content-Disposition': 'attachment; filename="report.xlsx',
-						// })
-					  
-						res.status(200).json({ret:true});
-					}).catch(function (e) {
-						res.end(e.message);
-					})
-				});
+				(async () => {
+					init.then(() => {
+						jsreport.render({
+							template: {
+								content: '<table><tr><td>foo</td></tr></table>',
+								engine: 'none',
+								recipe: 'html-to-xlsx'
+							}
+						}).then(function (res) {
+							console.log("entrou")
+							// var dataView = new DataView(res);
+							// var blob = new Blob([dataView], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+							// saveAs(blob, 'a.xlsx')
+						})
+					});
+				})()
 				// (async () => { console.log("aqui")
 				// 	const stream = await conversion(html);	
 				// 	console.log(stream);
