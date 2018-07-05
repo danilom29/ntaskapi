@@ -161,7 +161,8 @@ module.exports = app => {
 								recipe: 'html-to-xlsx'
 							}
 						}).then(function (res) {
-							console.log("entrou")
+							console.log("entrou");
+							sair({ret:true});
 							// var dataView = new DataView(res);
 							// var blob = new Blob([dataView], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 							// saveAs(blob, 'a.xlsx')
@@ -202,6 +203,8 @@ module.exports = app => {
 			}catch (e){
 				res.status(500).json({ret:false});
 			}
+
+			function sair(data) {res.status(200).json(data);}
 		}
 
 		let html = reportHtml.preview({
