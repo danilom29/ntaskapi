@@ -39,7 +39,7 @@ module.exports = app => {
 		let sql = `select kc.kc from KC_Values kc 
 		inner join cultures c on kc.culture_id = c.id
 		INNER JOIN Stages s on kc.stage_id = s.id
-		where kc.culture_id = ${req.body.culture_id.id} and kc.stage_id = ${req.body.stage_id} and umidade_maior_setenta = ${req.body.umidade_maior_setenta} 
+		where kc.culture_id = ${req.body.culture_id} and kc.stage_id = ${req.body.stage_id} and umidade_maior_setenta = ${req.body.umidade_maior_setenta} 
 		and (kc.user_id = ${req.user.id} or kc.user_id is null)`;
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(data => res.json(data))
@@ -51,7 +51,7 @@ module.exports = app => {
 	app.route("/kc/temp")
 	.all(app.auth.authenticate())	
 	.post((req,res) => { 
-		req.body.culture_id = req.body.culture_id.id;
+		req.body.culture_id = req.body.culture_id;
 		KC_Value.create(req.body)
 		.then(response => res.json(response))
 		.catch(error => {
