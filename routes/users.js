@@ -123,11 +123,9 @@ module.exports = app => {
 
 			transporter.sendMail(mailOptions, function(error, info){
 				if (error) { 
-					console.log(error)
 					let retorno = {ret:false};
 					res.status(200).json(retorno);
 				} else {
-					console.log("email enviado")
 					res.status(200).json({ret:true});
 				}
 			}); 

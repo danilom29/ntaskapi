@@ -33,25 +33,25 @@ module.exports = app => {
 	})
 	.post((req,res) => { 
 		req.body.user_id = req.user.id; 
-		let sql = `select * from Results where date(data_inclusao) = '${req.body.data_inclusao}'  and user_id = ${req.user.id} and culture_id = ${req.body.culture_id};`;
-		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
-		.then(data => {
-			if(data.length > 0){
-				Result.update(req.body, {where: {
-					id: data[0].id
-				}})
-				.then(result => res.sendStatus(204))
-				.catch(error => {
-					res.status(412).json({msg: error.message});
-				});
-			}else{
-				Result.create(req.body)
-				.then(result => res.json(result))
-				.catch(error => {
-					res.status(412).json({msg: error.message});
-				});
-			}
-		})
+		// let sql = `select * from Results where date(data_inclusao) = '${req.body.data_inclusao}'  and user_id = ${req.user.id} and culture_id = ${req.body.culture_id};`;
+		// sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
+		// .then(data => {
+		// 	// if(data.length > 0){
+		// 	// 	Result.update(req.body, {where: {
+		// 	// 		id: data[0].id
+		// 	// 	}})
+		// 	// 	.then(result => res.sendStatus(204))
+		// 	// 	.catch(error => {
+		// 	// 		res.status(412).json({msg: error.message});
+		// 	// 	});
+		// 	// }else{
+		// 	// }
+		// })
+		Result.create(req.body)
+		.then(result => res.json(result))
+		.catch(error => {
+			res.status(412).json({msg: error.message});
+		});
 
 	});
 
@@ -125,11 +125,9 @@ module.exports = app => {
 					}; 
 					transporter.sendMail(mailOptions, function(error, info){
 						if (error) { 
-							console.log(error)
 							let retorno = {ret:false};
 							res.status(200).json(retorno);
 						} else {
-							console.log("email enviado")
 							res.status(200).json(data);
 						}
 					});            		
@@ -148,7 +146,6 @@ module.exports = app => {
 				if (jsreportStarted) {
 					init = Promise.resolve(jsreport)
 				} else {
-					console.log('initializing jsreport...')
 					jsreportStarted = true
 					init = jsreport.init()
 				}
@@ -160,45 +157,10 @@ module.exports = app => {
 							recipe: 'html-to-xlsx'
 						}
 					}).then(function (res) {
-						console.log("entrou");
 						sair({ret:true});
-						// var dataView = new DataView(res);
-						// var blob = new Blob([dataView], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-						// saveAs(blob, 'a.xlsx')
 					})
 				});
 				
-				// (async () => { console.log("aqui")
-				// 	const stream = await conversion(html);	
-				// 	console.log(stream);
-				// 	stream.pipe(fs.createWriteStream('./midias/'+phantomConfig.name+'.xlsx',{autoClose:true}))
-				// 	.on('error',e =>{ console.log('error',e);res.status(200).json({ret:false});})
-				// 	.on('close',e =>{
-				// 		// res.status(200).json({ret:true});
-				// 		let mailOptions = {
-				// 			from: 'notreply.appirrigar@gmail.com',
-				// 			to: email,
-				// 			subject: 'Relatório de Resultados',
-				// 			html: '<p>Segue em anexo seu relatório em XLSX.</p> <br> <p>Sua mensagem foi enviada através do APP Irrigar</p>',
-				// 			attachments: [{ // Basta incluir esta chave e listar os anexos
-				// 				filename: 'relatorio.xlsx', // O nome que aparecerá nos anexos
-				// 				path: './midias/'+phantomConfig.name+'.xlsx' // O arquivo será lido neste local ao ser enviado
-				// 			}]
-				// 		}; 
-				// 		console.log(mailOptions)
-				// 		transporter.sendMail(mailOptions, function(error, info){
-				// 			if (error) { 
-				// 				console.log(error)
-				// 				let retorno = {ret:false};
-				// 				res.status(200).json(retorno);
-				// 			} else {
-				// 				console.log("email enviado")
-				// 				res.status(200).json({ret:true});
-				// 			}
-				// 		});          
-				// 	});
-					
-				// })()
 			}catch (e){
 				res.status(500).json({ret:false});
 			}

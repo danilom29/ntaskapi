@@ -4,7 +4,7 @@ module.exports = app => {
 	var sequelize = app.db.sequelize;
 	app.route("/kc")
 	.all(app.auth.authenticate())	
-	.post((req,res) => { console.log
+	.post((req,res) => {
 		if(typeof req.body.culture_id == "string"){
 			req.body.descricao = req.body.culture_id;	
 			req.body.user_id = req.user.id;
@@ -41,7 +41,7 @@ module.exports = app => {
 		INNER JOIN Stages s on kc.stage_id = s.id
 		where kc.culture_id = ${req.body.culture_id} and kc.stage_id = ${req.body.stage_id} and umidade_maior_setenta = ${req.body.umidade_maior_setenta} 
 		and (kc.user_id = ${req.user.id} or kc.user_id is null)`;
-		console.log(sql);
+
 		sequelize.query(sql, { type: sequelize.QueryTypes.SELECT})
 		.then(data => res.json(data))
 		.catch(error => {
