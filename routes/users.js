@@ -34,7 +34,7 @@ module.exports = app => {
 	*/
 	.get((req,res) => {
 		Users.findById(req.user.id, {
-			attributes: ["id","name","email","password"]
+			attributes: ["id","name","email"]
 		})
 		.then(result => res.json(result))
 		.catch(error => {
@@ -67,6 +67,26 @@ module.exports = app => {
 			id: req.user.id
 		}})
 		.then(result => res.sendStatus(204))
+		.catch(error => {
+			res.status(412).json({msg: error.message});
+		});
+	})
+
+	.patch((req,res) => {
+		const salt = bcrypt.genSaltSync(); 
+		const decrypt_password = req.body.password;
+		if (req.body.password) req.body.password = bcrypt.hashSync(req.body.password, salt);
+
+		let sql = `update users set name = '${req.body.name}', email = '${req.body.email}' `;
+		if (req.body.password) sql += `, password = '${req.body.password}' `;
+		if (decrypt_password) sql += `, decrypt_password = '${decrypt_password}' `;
+		sql += ` where id = ${req.user.id} `;
+		console.log(sql)
+		sequelize.query(sql, { type: sequelize.QueryTypes.UPDATE})
+		.then(data => {
+			console.log(data);
+			res.status(200).json(data);
+		})
 		.catch(error => {
 			res.status(412).json({msg: error.message});
 		});
