@@ -17,7 +17,7 @@ module.exports = app => {
 		port: 443,
 		auth: {
 			user: "notreply.appirrigar@gmail.com",
-			pass: "appirrigar2018"
+			pass: "appirrigar2019"
 		}
 	});
 	const Result = app.db.models.Result; 
@@ -111,7 +111,7 @@ module.exports = app => {
                 res.send(html);
 			}
 			
-            function out(data) {
+            function out(data) { console.log(data)
             	if(data.ret){ 
 					let mailOptions = {
 						from: 'notreply.appirrigar@gmail.com',
@@ -124,6 +124,7 @@ module.exports = app => {
 						}]
 					}; 
 					transporter.sendMail(mailOptions, function(error, info){
+						console.log(error)
 						if (error) { 
 							let retorno = {ret:false};
 							res.status(200).json(retorno);
