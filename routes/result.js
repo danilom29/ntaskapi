@@ -17,7 +17,7 @@ module.exports = app => {
 		port: 443,
 		auth: {
 			user: "notreply.appirrigar@gmail.com",
-			pass: "appirrigar2018"
+			pass: "appirrigar2019"
 		}
 	});
 	const Result = app.db.models.Result; 
