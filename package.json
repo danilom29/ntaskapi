@@ -14,7 +14,7 @@
     "name": "Documentação - Node Task API"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel": "^6.23.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.3",
