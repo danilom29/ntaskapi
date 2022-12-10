@@ -22,7 +22,7 @@
     "compression": "^1.7.2",
     "consign": "^0.1.6",
     "cors": "^2.8.4",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "helmet": "^3.11.0",
     "html-to-xlsx": "^1.0.0",
